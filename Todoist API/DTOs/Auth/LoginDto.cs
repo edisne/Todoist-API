@@ -1,4 +1,4 @@
-﻿namespace Todoist_API.DTOs
+﻿namespace Todoist_API.DTOs.Auth
 {
     public class LoginDto
     {

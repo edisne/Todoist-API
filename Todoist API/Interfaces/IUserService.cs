@@ -2,8 +2,7 @@
 {
     public interface IUserService
     {
-        Task<ServiceResponse<UserDto>> GetUserById(int id);
-        Task<ServiceResponse<UserDto>> Login(string email, string password);
-
+        Task<ServiceResponse<UserDto>> GetUserById(string id);
+        Task<User> GetUserByUsername(string username);
     }
 }

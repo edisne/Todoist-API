@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Todoist_API.DTOs
-{   
+namespace Todoist_API.DTOs.Auth
+{
     public class RegisterDto
     {
         [Required]

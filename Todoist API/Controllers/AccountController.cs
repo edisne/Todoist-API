@@ -4,6 +4,7 @@ using Todoist_API.Interfaces;
 using System.Security.Cryptography;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Todoist_API.DTOs.Auth;
 
 
 namespace Todoist_API.Controllers
@@ -50,6 +51,10 @@ namespace Todoist_API.Controllers
 
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
 
+            if (!roleResult.Succeeded) {
+                return BadRequest(serviceResponse);
+            }
+
             var data = new UserDto
             {
                 UserName = user.UserName,
@@ -78,14 +83,15 @@ namespace Todoist_API.Controllers
                 Data = null
             };
             
-            if (user is null) return Unauthorized(serviceResponse);
+            if (user is null) return Unauthorized();
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            if (!result) return Unauthorized(serviceResponse);
+            if (!result) return Unauthorized();
 
             var loggedInUser = new UserDto
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Name = user.Name,
                 LastName = user.LastName,

@@ -13,28 +13,10 @@ namespace Todoist_API.Services
             _context = context; 
         }
 
-        public async Task<ServiceResponse<UserDto>> Login(string email, string password)
+        public async Task<ServiceResponse<UserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<UserDto>();
-            var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
-            serviceResponse.Data = _mapper.Map<UserDto>(dbUser);
-            if (dbUser is not null)
-            {
-                serviceResponse.Success = true;
-                
-            } else
-            {
-                serviceResponse.Data = null;
-                serviceResponse.Success = false;
-                serviceResponse.Message = "User not found";
-            }
-            return serviceResponse;
-        }
-
-        public async Task<ServiceResponse<UserDto>> GetUserById(int id)
-        {
-            var serviceResponse = new ServiceResponse<UserDto>();
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id.ToString());
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             serviceResponse.Data = _mapper.Map<UserDto>(dbUser);
             if (dbUser is not null)
             {
@@ -42,6 +24,11 @@ namespace Todoist_API.Services
             }
             throw new Exception("User not found");
 
+        }
+
+        public async Task<User> GetUserByUsername(string username)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
         }
     }
 }

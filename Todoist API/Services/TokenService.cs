@@ -26,6 +26,10 @@ namespace Todoist_API.Services
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName.ToString())
             };
 
+            var roles = await _userManager.GetRolesAsync(user);
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
